@@ -34,26 +34,24 @@ COLUMN_TYPES = {
      "STB", "STBP", "TYPE", "VARB", "GT", "GQ"]}
 
 
-def str_dtypes():
-    dtypes = {}
-    for column in COLUMN_TYPES["str"]:
-        dtypes[column] = str
-
-    return dtypes
+def dffilter(dataframe, conditions):
+    """Return a dataframe filtered by the condicions."""
+    return dataframe.query(conditions)
 
 
 def load(filepath):
     """Return the filepath loaded as a DataFrame."""
-    dtypes = str_dtypes()
     try:
-        df = pd.read_table(filepath, dtype=dtypes)
+        df = pd.read_table(filepath)
     except UnicodeDecodeError:
-        df = pd.read_table(filepath, dtype=dtypes, encoding="iso-8859-1")
+        df = pd.read_table(filepath, encoding="iso-8859-1")
 
     # Correct columns with "." to zeroes.
     df.replace(".", 0, inplace=True)
     # Correct columns with "1." to ones.
     df.replace("1.", 1, inplace=True)
+    # Fill the NaN with zeroes
+    df.fillna(0, inplace=True)
 
     df[COLUMN_TYPES["numeric"]] = df[COLUMN_TYPES["numeric"]].\
         apply(pd.to_numeric)
