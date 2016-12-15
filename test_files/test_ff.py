@@ -33,4 +33,25 @@ class testDataFrame(TestCase):
     def test_DF_can_be_filtered_by_one_condition(self):
         df = ff.load(self.tab_file)
 
-        self.assertEqual(ff.dffilter(df, 'Ref == "G"').shape, (60, 151))
+        self.assertEqual(ff.dffilter(df, ['Ref == "G"']).shape, (60, 151))
+        self.assertEqual(
+            ff.dffilter(df, ['Func.refGene contains exonic']).shape,
+            (57, 151))
+
+    def test_DF_can_be_filtered_by_two_conditions(self):
+        df = ff.load(self.tab_file)
+
+        self.assertEqual(
+            ff.dffilter(
+                df, ['Ref == "A"', 'Func.refGene contains exonic']).shape,
+            (13, 151))
+
+    def test_DF_can_be_filterd_by_numeric_AND_string_conditions(self):
+        df = ff.load(self.tab_file)
+
+        self.assertEqual(
+            ff.dffilter(
+                df, ['PopFreqMax < 0.01',
+                     'Func.refGene contains exonic']).shape,
+            (2, 151))
+

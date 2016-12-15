@@ -34,9 +34,18 @@ COLUMN_TYPES = {
      "STB", "STBP", "TYPE", "VARB", "GT", "GQ"]}
 
 
-def dffilter(dataframe, conditions):
+def dffilter(df, conditions):
     """Return a dataframe filtered by the condicions."""
-    return dataframe.query(conditions)
+    if not conditions:
+        return df
+
+    condition = conditions.pop()
+
+    if "contains" in condition:
+        column, query = condition.split(" contains ")
+        return dffilter(df[df[column].str.contains(query)], conditions)
+    else:
+        return dffilter(df.query(condition), conditions)
 
 
 def load(filepath):
