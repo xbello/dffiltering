@@ -1,4 +1,5 @@
 .cache
+.ropeproject
 __init__.py
 __pycache__
 *.swp
