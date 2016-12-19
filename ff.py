@@ -93,4 +93,6 @@ def main(args):
 
 if __name__ == "__main__":
     import sys
-    print(main(argparser().parse_args(sys.argv[1:])))
+    df = main(argparser().parse_args(sys.argv[1:]))
+
+    print(df.to_csv(sep="\t", index=False))
