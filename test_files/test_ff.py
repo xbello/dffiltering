@@ -57,3 +57,25 @@ class testDataFrame(TestCase):
         conditions = ['PopFreqMax < 0.01 | PopFreqMax > 0.99',
                       'Func.refGene contains exonic']
         self.assertEqual(ff.dffilter(df, conditions).shape, (8, 151))
+
+    def test_DF_can_be_filtered_with_OR_string_fields(self):
+        df = ff.load(self.tab_file)
+
+        conditions = ['PopFreqMax < 0.01 | PopFreqMax > 0.99',
+                      'Func.refGene contains exonic|intronic']
+        self.assertEqual(ff.dffilter(df, conditions).shape, (53, 151))
+
+
+class testMainEntry(TestCase):
+    def setUp(self):
+        self.tab_file = os.path.join(os.path.dirname(__file__), "8859.tab")
+        self.json_filter = os.path.join(os.path.dirname(__file__),
+                                        "filter_sample.json")
+
+    def test_main_entry_filter_correctly(self):
+        n_args = ff.argparser().parse_args(
+            args=[self.tab_file, self.json_filter])
+
+        df = ff.main(n_args)
+
+        self.assertEqual(df.shape, (7, 151))

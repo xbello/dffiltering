@@ -35,7 +35,7 @@ COLUMN_TYPES = {
 
 
 def dffilter(df, conditions):
-    """Return a dataframe filtered by the condicions."""
+    """Return a dataframe filtered by the conditions."""
     if not conditions:
         return df
 
@@ -66,3 +66,31 @@ def load(filepath):
         apply(pd.to_numeric)
 
     return df
+
+
+def argparser():
+    """Return the parsed arguments."""
+    import argparse
+
+    parser = argparse.ArgumentParser(description="DataFrame Filtering")
+    parser.add_argument("filepath",
+                        help="Path to the TSV file")
+    parser.add_argument("json_filter",
+                        help="JSON file with list of filters")
+
+    return parser
+
+
+def main(args):
+    """Main entry point to be called as command line."""
+    import json
+
+    with open(args.json_filter) as json_filter:
+        df = dffilter(load(args.filepath), json.load(json_filter))
+
+    return df
+
+
+if __name__ == "__main__":
+    import sys
+    print(main(argparser().parse_args(sys.argv[1:])))

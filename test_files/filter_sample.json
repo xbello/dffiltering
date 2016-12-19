@@ -1,0 +1,5 @@
+["vardb_gatk <= 20",
+ "vardb_tvc <= 20",
+ "ExAC_ALL <= 0.1",
+ "Func.refGene contains exonic|splicing"
+]
