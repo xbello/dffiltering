@@ -81,18 +81,19 @@ def argparser():
     return parser
 
 
-def main(args):
+def main(filepath, json_filter):
     """Main entry point to be called as command line."""
     import json
 
-    with open(args.json_filter) as json_filter:
-        df = dffilter(load(args.filepath), json.load(json_filter))
+    with open(json_filter) as js_filter:
+        df = dffilter(load(filepath), json.load(js_filter))
 
     return df
 
 
 if __name__ == "__main__":
     import sys
-    df = main(argparser().parse_args(sys.argv[1:]))
+    args = argparser().parse_args(sys.argv[1:])
+    df = main(args.filepath, args.json_filter)
 
     print(df.to_csv(sep="\t", index=False))

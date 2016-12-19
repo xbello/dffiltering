@@ -73,9 +73,6 @@ class testMainEntry(TestCase):
                                         "filter_sample.json")
 
     def test_main_entry_filter_correctly(self):
-        n_args = ff.argparser().parse_args(
-            args=[self.tab_file, self.json_filter])
-
-        df = ff.main(n_args)
+        df = ff.main(self.tab_file, self.json_filter)
 
         self.assertEqual(df.shape, (7, 151))
