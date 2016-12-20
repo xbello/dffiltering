@@ -74,6 +74,12 @@ class testDataFrame(TestCase):
 
         self.assertEqual(ff.dffilter(conditions, df).shape, (8, 98))
 
+        df = ff.load(self.tab2_file)  # The filtering of df is always in place
+
+        conditions = ["TVC.counts > 3"]
+
+        self.assertEqual(ff.dffilter(conditions, df).shape, (1, 98))
+
     def test_non_existent_columns_doesnt_break_code(self):
         df = ff.load(self.tab2_file)
 
