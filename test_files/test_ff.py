@@ -35,51 +35,51 @@ class testDataFrame(TestCase):
     def test_DF_can_be_filtered_by_one_condition(self):
         df = ff.load(self.tab_file)
 
-        self.assertEqual(ff.dffilter(df, ['Ref == "G"']).shape, (60, 151))
+        self.assertEqual(ff.dffilter(['Ref == "G"'], df).shape, (60, 151))
 
         conditions = ['Func.refGene contains exonic']
-        self.assertEqual(ff.dffilter(df, conditions).shape, (57, 151))
+        self.assertEqual(ff.dffilter(conditions, df).shape, (57, 151))
 
     def test_DF_can_be_filtered_by_two_conditions(self):
         df = ff.load(self.tab_file)
 
         conditions = ['Ref == "A"', 'Func.refGene contains exonic']
 
-        self.assertEqual(ff.dffilter(df, conditions).shape, (13, 151))
+        self.assertEqual(ff.dffilter(conditions, df).shape, (13, 151))
 
     def test_DF_can_be_filtered_by_numeric_AND_string_conditions(self):
         df = ff.load(self.tab_file)
 
         conditions = ['PopFreqMax < 0.01', 'Func.refGene contains exonic']
-        self.assertEqual(ff.dffilter(df, conditions).shape, (2, 151))
+        self.assertEqual(ff.dffilter(conditions, df).shape, (2, 151))
 
     def test_DF_can_be_filtered_with_OR_numeric_fields(self):
         df = ff.load(self.tab_file)
 
         conditions = ['PopFreqMax < 0.01 | PopFreqMax > 0.99',
                       'Func.refGene contains exonic']
-        self.assertEqual(ff.dffilter(df, conditions).shape, (8, 151))
+        self.assertEqual(ff.dffilter(conditions, df).shape, (8, 151))
 
     def test_DF_can_be_filtered_with_OR_string_fields(self):
         df = ff.load(self.tab_file)
 
         conditions = ['PopFreqMax < 0.01 | PopFreqMax > 0.99',
                       'Func.refGene contains exonic|intronic']
-        self.assertEqual(ff.dffilter(df, conditions).shape, (53, 151))
+        self.assertEqual(ff.dffilter(conditions, df).shape, (53, 151))
 
     def test_query_columns_with_dots(self):
         df = ff.load(self.tab2_file)
 
         conditions = ["TVC.counts < 3"]
 
-        self.assertEqual(ff.dffilter(df, conditions).shape, (8, 98))
+        self.assertEqual(ff.dffilter(conditions, df).shape, (8, 98))
 
     def test_non_existent_columns_doesnt_break_code(self):
         df = ff.load(self.tab2_file)
 
         conditions = ["Imaginary < 3"]
 
-        self.assertEqual(ff.dffilter(df, conditions).shape, (9, 98))
+        self.assertEqual(ff.dffilter(conditions, df).shape, (9, 98))
 
 
 class testMainEntry(TestCase):
@@ -89,6 +89,6 @@ class testMainEntry(TestCase):
                                         "filter_sample.json")
 
     def test_main_entry_filter_correctly(self):
-        df = ff.main(self.tab_file, self.json_filter)
+        df = ff.main(self.json_filter, self.tab_file)
 
         self.assertEqual(df.shape, (7, 151))

@@ -5,7 +5,7 @@ from dffiltering.columns import COLUMN_TYPES  # XXX Users should be able to
   # aport their own column_types
 
 
-def dffilter(df, conditions, i=0):
+def dffilter(conditions, df, i=0):
     """Return a dataframe filtered by the conditions."""
     if len(conditions) <= i:
         return df
@@ -15,8 +15,8 @@ def dffilter(df, conditions, i=0):
     if "contains" in condition:
         column, query = condition.split(" contains ")
         if column in df.columns:
-            return dffilter(df[df[column].str.contains(query)],
-                            conditions,
+            return dffilter(conditions,
+                            df[df[column].str.contains(query)],
                             i + 1)
 
     else:
@@ -30,10 +30,10 @@ def dffilter(df, conditions, i=0):
 
             condition = condition.replace(column, new_column)
 
-            return dffilter(df.query(condition), conditions, i + 1)
+            return dffilter(conditions, df.query(condition), i + 1)
 
     # This column didn't exits, continue trying next columns
-    return dffilter(df, conditions, i + 1)
+    return dffilter(conditions, df, i + 1)
 
 
 def load(filepath):
@@ -73,12 +73,12 @@ def argparser():
     return parser
 
 
-def main(filepath, json_filter):
+def main(json_filter, filepath):
     """Return a filtered DF per json_filter."""
     import json
 
     with open(json_filter) as js_filter:
-        df = dffilter(load(filepath), json.load(js_filter))
+        df = dffilter(json.load(js_filter), load(filepath))
 
     return df
 
@@ -86,6 +86,6 @@ def main(filepath, json_filter):
 if __name__ == "__main__":
     import sys
     args = argparser().parse_args(sys.argv[1:])
-    d_f = main(args.filepath, args.json_filter)
+    d_f = main(args.json_filter, args.filepath)
 
     print(d_f.to_csv(sep="\t", index=False))
