@@ -4,6 +4,7 @@
 COLUMN_TYPES = {
     "numeric":
     ["Start", "End", "vardb_life", "vardb_gatk", "vardb_tvc", "vardb_1x",
+     "GATK.counts", "GATK.Depth", "TVC.counts", "TVC.Depth",
      "PopFreqMax", "1000G_ALL", "1000G_AFR", "1000G_AMR", "1000G_EAS",
      "1000G_EUR", "1000G_SAS", "ExAC_ALL", "ExAC_AFR", "ExAC_AMR", "ExAC_EAS",
      "ExAC_FIN", "ExAC_NFE", "ExAC_OTH", "ExAC_SAS", "ESP6500siv2_ALL",

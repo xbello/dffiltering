@@ -5,17 +5,19 @@ from dffiltering.columns import COLUMN_TYPES  # XXX Users should be able to
   # aport their own column_types
 
 
-def dffilter(df, conditions):
+def dffilter(df, conditions, i=0):
     """Return a dataframe filtered by the conditions."""
-    if not conditions:
+    if len(conditions) <= i:
         return df
 
-    condition = conditions.pop()
+    condition = conditions[i]
 
     if "contains" in condition:
         column, query = condition.split(" contains ")
         if column in df.columns:
-            return dffilter(df[df[column].str.contains(query)], conditions)
+            return dffilter(df[df[column].str.contains(query)],
+                            conditions,
+                            i + 1)
 
     else:
         # Names with dots, spaces, brackets... fail to do query
@@ -28,10 +30,10 @@ def dffilter(df, conditions):
 
             condition = condition.replace(column, new_column)
 
-            return dffilter(df.query(condition), conditions)
+            return dffilter(df.query(condition), conditions, i + 1)
 
     # This column didn't exits, continue trying next columns
-    return dffilter(df, conditions)
+    return dffilter(df, conditions, i + 1)
 
 
 def load(filepath):
@@ -41,15 +43,19 @@ def load(filepath):
     except UnicodeDecodeError:
         df = pd.read_table(filepath, encoding="iso-8859-1")
 
-    # Correct columns with "." to zeroes.
-    df.replace(".", 0, inplace=True)
-    # Correct columns with "1." to ones.
-    df.replace("1.", 1, inplace=True)
-    # Fill the NaN with zeroes
-    df.fillna(0, inplace=True)
+    numeric_columns = [_ for _ in COLUMN_TYPES["numeric"] if _ in df.columns]
 
-    df[COLUMN_TYPES["numeric"]] = df[COLUMN_TYPES["numeric"]].\
-        apply(pd.to_numeric)
+    for numeric_column in numeric_columns:
+        # Correct columns with "." to zeroes.
+        df[numeric_column].replace(".", 0, inplace=True)
+        # Correct columns with "1." to ones.
+        df[numeric_column].replace("1.", 1, inplace=True)
+        # Replace - with zeroes
+        df[numeric_column].replace("-", 0, inplace=True)
+        # Fill the NaN with zeroes
+        df[numeric_column].fillna(0, inplace=True)
+
+    df[numeric_columns] = df[numeric_columns].apply(pd.to_numeric)
 
     return df
 
