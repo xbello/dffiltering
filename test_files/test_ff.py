@@ -10,6 +10,8 @@ from dffiltering import ff
 class testDataFrame(TestCase):
     def setUp(self):
         self.tab_file = os.path.join(os.path.dirname(__file__), "8859.tab")
+        self.tab2_file = os.path.join(os.path.dirname(__file__),
+                                      "DOT.column.tab")
 
     def test_can_load_tab_as_DF(self):
         df = ff.load(self.tab_file)
@@ -64,6 +66,20 @@ class testDataFrame(TestCase):
         conditions = ['PopFreqMax < 0.01 | PopFreqMax > 0.99',
                       'Func.refGene contains exonic|intronic']
         self.assertEqual(ff.dffilter(df, conditions).shape, (53, 151))
+
+    def test_query_columns_with_dots(self):
+        df = ff.load(self.tab2_file)
+
+        conditions = ["TVC.counts < 3"]
+
+        self.assertEqual(ff.dffilter(df, conditions).shape, (8, 98))
+
+    def test_non_existent_columns_doesnt_break_code(self):
+        df = ff.load(self.tab2_file)
+
+        conditions = ["Imaginary < 3"]
+
+        self.assertEqual(ff.dffilter(df, conditions).shape, (9, 98))
 
 
 class testMainEntry(TestCase):

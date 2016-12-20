@@ -14,9 +14,24 @@ def dffilter(df, conditions):
 
     if "contains" in condition:
         column, query = condition.split(" contains ")
-        return dffilter(df[df[column].str.contains(query)], conditions)
+        if column in df.columns:
+            return dffilter(df[df[column].str.contains(query)], conditions)
+
     else:
-        return dffilter(df.query(condition), conditions)
+        # Names with dots, spaces, brackets... fail to do query
+        column = condition.split()[0]
+        if column in df.columns:
+            new_column = column
+            for weird in [".", " "]:
+                new_column = new_column.replace(weird, "_")
+            df.rename(columns={column: new_column}, inplace=True)
+
+            condition = condition.replace(column, new_column)
+
+            return dffilter(df.query(condition), conditions)
+
+    # This column didn't exits, continue trying next columns
+    return dffilter(df, conditions)
 
 
 def load(filepath):
