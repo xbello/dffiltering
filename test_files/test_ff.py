@@ -87,6 +87,13 @@ class testDataFrame(TestCase):
 
         self.assertEqual(ff.dffilter(conditions, df).shape, (9, 98))
 
+    def test_multiple_weirdness_can_function(self):
+        df = ff.load(self.tab2_file)
+
+        conditions = ["TVC.counts < 3", "TVC.counts > 3"]
+
+        self.assertEqual(ff.dffilter(conditions, df).shape, (0, 98))
+
 
 class testMainEntry(TestCase):
     def setUp(self):
