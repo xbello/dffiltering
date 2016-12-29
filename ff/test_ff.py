@@ -1,17 +1,18 @@
 """Test the ff module."""
-import os
+from os.path import dirname, join
 import pandas as pd
 import numpy as np
 from unittest import TestCase
 
-from dffiltering import ff
+import ff
 
 
 class testDataFrame(TestCase):
     def setUp(self):
-        self.tab_file = os.path.join(os.path.dirname(__file__), "8859.tab")
-        self.tab2_file = os.path.join(os.path.dirname(__file__),
-                                      "DOT.column.tab")
+        self.tab_file = join(dirname(__file__), "test_files", "8859.tab")
+        self.tab2_file = join(dirname(__file__),
+                              "test_files",
+                              "DOT.column.tab")
 
     def test_can_load_tab_as_DF(self):
         df = ff.load(self.tab_file)
@@ -90,9 +91,10 @@ class testDataFrame(TestCase):
 
 class testMainEntry(TestCase):
     def setUp(self):
-        self.tab_file = os.path.join(os.path.dirname(__file__), "8859.tab")
-        self.json_filter = os.path.join(os.path.dirname(__file__),
-                                        "filter_sample.json")
+        self.tab_file = join(dirname(__file__), "test_files", "8859.tab")
+        self.json_filter = join(dirname(__file__),
+                                "test_files",
+                                "filter_sample.json")
 
     def test_main_entry_filter_correctly(self):
         df = ff.main(self.json_filter, self.tab_file)

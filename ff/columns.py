@@ -3,7 +3,7 @@
 
 COLUMN_TYPES = {
     "numeric":
-    ["Start", "End", "vardb_life", "vardb_gatk", "vardb_tvc", "vardb_1x",
+    ["Start", "End", "vardb_life", "vardb_gatk", "vardb_tvc",
      "GATK.counts", "GATK.Depth", "TVC.counts", "TVC.Depth",
      "PopFreqMax", "1000G_ALL", "1000G_AFR", "1000G_AMR", "1000G_EAS",
      "1000G_EUR", "1000G_SAS", "ExAC_ALL", "ExAC_AFR", "ExAC_AMR", "ExAC_EAS",
@@ -18,7 +18,7 @@ COLUMN_TYPES = {
      "phastCons7way_vertebrate", "phastCons20way_mammalian",
      "SiPhy_29way_logOdds", "dbscSNV_ADA_SCORE", "dbscSNV_RF_SCORE", "dann"],
     "str":
-    ["Chr", "Ref", "Alt", "Func.refGene", "Gene.refGene",
+    ["Chr", "Ref", "Alt", "Func.refGene", "Gene.refGene", "vardb_1x",
      "GeneDetail.refGene", "ExonicFunc.refGene", "AAChange.refGene",
      "Func.ensGene", "Gene.ensGene", "GeneDetail.ensGene",
      "ExonicFunc.ensGene", "AAChange.ensGene", "phastConsElements46way",

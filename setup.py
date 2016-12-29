@@ -6,7 +6,7 @@ setup(
     version="0.1",
     description="Command line to filter TSV files.""",
     author_email="xbello@gmail.com",
-
+    packages=["ff"],
     install_requires=[
         "pandas==0.19.1"],
     entry_points={

@@ -1,7 +1,7 @@
 """Deals with TAB files to load, munge and filter them."""
 import pandas as pd
 
-from dffiltering.columns import COLUMN_TYPES  # XXX Users should be able to
+from columns import COLUMN_TYPES  # XXX Users should be able to
   # aport their own column_types
 
 
