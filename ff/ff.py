@@ -5,35 +5,36 @@ from columns import COLUMN_TYPES  # XXX Users should be able to
   # aport their own column_types
 
 
-def dffilter(conditions, df, i=0):
+def dffilter(conditions, df):
     """Return a dataframe filtered by the conditions."""
-    if len(conditions) <= i:
+    if not conditions:
         return df
 
-    condition = conditions[i]
+    column, operator, terms = conditions[0].split(" ", 2)
 
-    if "contains" in condition:
-        column, query = condition.split(" contains ")
+    # Column names with dots, spaces, brackets... fail to do query
+    weirds = [".", " "]
+    if any(_ in column for _ in weirds):
+        new_column = column
+        for weird in weirds:
+            new_column = new_column.replace(weird, "_")
         if column in df.columns:
-            return dffilter(conditions,
-                            df[df[column].str.contains(query)],
-                            i + 1)
+            df.rename(columns={column: new_column}, inplace=True)
+        conditions[0] = conditions[0].replace(column, new_column)
+        return dffilter(conditions, df)
+
+
+    if operator in ["contains"]:
+        if column in df.columns:
+            return dffilter(conditions[1:],
+                            df[df[column].str.contains(terms)])
 
     else:
-        # Names with dots, spaces, brackets... fail to do query
-        column = condition.split()[0]
         if column in df.columns:
-            new_column = column
-            for weird in [".", " "]:
-                new_column = new_column.replace(weird, "_")
-            df.rename(columns={column: new_column}, inplace=True)
-
-            condition = condition.replace(column, new_column)
-
-            return dffilter(conditions, df.query(condition), i + 1)
+            return dffilter(conditions[1:], df.query(conditions[0]))
 
     # This column didn't exits, continue trying next columns
-    return dffilter(conditions, df, i + 1)
+    return dffilter(conditions[1:], df)
 
 
 def load(filepath):
