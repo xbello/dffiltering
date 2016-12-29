@@ -1,8 +1,11 @@
 """Deals with TAB files to load, munge and filter them."""
 import pandas as pd
 
-from columns import COLUMN_TYPES  # XXX Users should be able to
-  # aport their own column_types
+try:
+    from ff.columns import COLUMN_TYPES  # XXX Users should be able to
+                                         # aport their own column_types
+except ImportError:
+    from columns import COLUMN_TYPES
 
 
 def dffilter(conditions, df):
