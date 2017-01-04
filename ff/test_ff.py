@@ -13,6 +13,7 @@ class testDataFrame(TestCase):
         self.tab2_file = join(dirname(__file__),
                               "test_files",
                               "DOT.column.tab")
+        self.tab3_file = join(dirname(__file__), "test_files", "NA_fail.tab")
 
     def test_can_load_tab_as_DF(self):
         df = ff.load(self.tab_file)
@@ -94,6 +95,13 @@ class testDataFrame(TestCase):
         conditions = ["TVC.counts < 3", "TVC.counts > 3"]
 
         self.assertEqual(ff.dffilter(conditions, df).shape, (0, 98))
+
+    def test_NaN_in_str_fields_dont_break_the_filter(self):
+        df = ff.load(self.tab3_file)
+
+        conditions = ['Func.refGene contains exonic|intronic']
+
+        self.assertEqual(ff.dffilter(conditions, df).shape, (1, 76))
 
 
 class testMainEntry(TestCase):

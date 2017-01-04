@@ -26,11 +26,10 @@ def dffilter(conditions, df):
         conditions[0] = conditions[0].replace(column, new_column)
         return dffilter(conditions, df)
 
-
     if operator in ["contains"]:
         if column in df.columns:
             return dffilter(conditions[1:],
-                            df[df[column].str.contains(terms)])
+                            df[df[column].str.contains(terms, na=False)])
 
     else:
         if column in df.columns:
