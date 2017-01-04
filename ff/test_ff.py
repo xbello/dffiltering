@@ -10,10 +10,11 @@ import ff
 class testDataFrame(TestCase):
     def setUp(self):
         self.tab_file = join(dirname(__file__), "test_files", "8859.tab")
-        self.tab2_file = join(dirname(__file__),
-                              "test_files",
-                              "DOT.column.tab")
+        self.tab2_file = join(
+            dirname(__file__), "test_files", "DOT.column.tab")
         self.tab3_file = join(dirname(__file__), "test_files", "NA_fail.tab")
+        self.tab4_file = join(
+            dirname(__file__), "test_files", "str_num_fail.tab")
 
     def test_can_load_tab_as_DF(self):
         df = ff.load(self.tab_file)
@@ -100,6 +101,14 @@ class testDataFrame(TestCase):
         df = ff.load(self.tab3_file)
 
         conditions = ['Func.refGene contains exonic|intronic']
+
+        self.assertEqual(ff.dffilter(conditions, df).shape, (1, 76))
+
+    def test_num_columns_that_fails_cast_to_str_coerced_into_nan(self):
+        df = ff.load(self.tab4_file)
+
+        conditions = ['CG46 != CG46']  # This is a trick to check if the column
+                                       # has a NaN (NaN is not equal to itself)
 
         self.assertEqual(ff.dffilter(conditions, df).shape, (1, 76))
 

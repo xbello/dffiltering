@@ -58,7 +58,9 @@ def load(filepath):
         # Fill the NaN with zeroes
         df[numeric_column].fillna(0, inplace=True)
 
-    df[numeric_columns] = df[numeric_columns].apply(pd.to_numeric)
+    df[numeric_columns] = df[numeric_columns].\
+        apply(pd.to_numeric, errors="coerce")
+
 
     return df
 
