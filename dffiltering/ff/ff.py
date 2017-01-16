@@ -2,9 +2,9 @@
 import pandas as pd
 
 try:
-    from ff.columns import COLUMN_TYPES  # XXX Users should be able to
-                                         # aport their own column_types
-except ImportError:
+    from .columns import COLUMN_TYPES
+    # XXX Users should be able to aport their own column_types
+except (SystemError, ImportError):
     from columns import COLUMN_TYPES
 
 

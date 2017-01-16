@@ -1,12 +1,12 @@
-from setuptools import setup
+from setuptools import find_packages, setup
 
 
 setup(
     name="dffiltering",
-    version="0.1.2",
+    version="0.1.3",
     description="Command line to filter TSV files.""",
     author_email="xbello@gmail.com",
-    packages=["command", "ff"],
+    packages=["dffiltering.ff", "dffiltering.command"],
     install_requires=[
         "pandas==0.19.1"],
     entry_points={

@@ -1,5 +1,5 @@
 import argparse
-from ff import ff
+from dffiltering.ff import ff
 
 
 def parse_args():
@@ -19,6 +19,7 @@ def run():
     if args:
         df = ff.main(args.json, args.tsv)
         print(df.to_csv(sep="\t", index=False))
+
 
 if __name__ == "__main__":
     run()
