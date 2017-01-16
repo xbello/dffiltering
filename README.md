@@ -2,7 +2,7 @@
 
 ## Requirements
 
-Python >= 3.4
+Python >= 3.4, Pandas >= 0.19.1
 
 ## Install
 The source code is currently hosted on GitHub at:
@@ -21,7 +21,7 @@ You'll need a TSV file and a json file with all the filtering conditions. The js
      "ExAC_ALL <= 0.1",
      "Func.refGene contains exonic|splicing"
     ]
-    
+
 Then you can call the filtering from the command line:
 
 ```sh
