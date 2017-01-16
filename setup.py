@@ -11,4 +11,4 @@ setup(
         "pandas==0.19.1"],
     entry_points={
         "console_scripts": [
-            "dff = dffiltering.command.run:run"]})
+            "dff = ff.command.run:run"]})
