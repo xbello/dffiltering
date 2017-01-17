@@ -18,7 +18,7 @@ You'll need a TSV file and a json file with all the filtering conditions. The js
 
     ["vardb_gatk <= 20",
      "vardb_tvc <= 20",
-     "ExAC_ALL <= 0.1",
+     "ExAC_ALL <= 0.1 | ExAC_ALL >= 0.9",
      "Func.refGene contains exonic|splicing"
     ]
 
