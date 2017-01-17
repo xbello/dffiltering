@@ -9,7 +9,7 @@ The source code is currently hosted on GitHub at:
 http://github.com/xbello/dffiltering
 
 ```sh
-pip install git+git://github.com/xbello/dffiltering
+pip3 install git+git://github.com/xbello/dffiltering
 ```
 
 ## Usage
