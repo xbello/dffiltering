@@ -1,4 +1,5 @@
 """Deals with TAB files to load, munge and filter them."""
+from os.path import basename
 import pandas as pd
 
 try:
@@ -69,9 +70,9 @@ def argparser(args):
     import argparse
 
     parser = argparse.ArgumentParser(description="DataFrame Filtering")
-    parser.add_argument("filepath", nargs=1,
+    parser.add_argument("filepath",
                         help="Path to the TSV file")
-    parser.add_argument("json_filter", nargs=1,
+    parser.add_argument("json_filter",
                         help="JSON file with list of filters")
     parser.add_argument(
         "--column-contains", action="append",
@@ -83,12 +84,23 @@ def argparser(args):
     return parser.parse_args(args)
 
 
-def main(json_filter, filepath):
+def main(args):  # json_filter, filepath, column_contains=None):
     """Return a filtered DF per json_filter."""
     import json
 
-    with open(json_filter) as js_filter:
-        df = dffilter(json.load(js_filter), load(filepath))
+    filters = {}
+    with open(args.json_filter) as js_filter:
+        filters = json.load(js_filter)
+
+    if hasattr(args, "column_contains"):
+        # Load the extra conditions passed
+        for column in args.column_contains:
+            column_name = basename(column)
+            with open(column) as contains:
+                conditions = "|".join([_.rstrip() for _ in contains])
+            filters.append("{} contains {}".format(column_name, conditions))
+
+    df = dffilter(filters, load(args.filepath))
 
     return df
 
@@ -96,6 +108,6 @@ def main(json_filter, filepath):
 if __name__ == "__main__":
     import sys
     p_args = argparser(sys.argv[1:])
-    d_f = main(p_args.json_filter, p_args.filepath)
+    d_f = main(p_args)
 
     print(d_f.to_csv(sep="\t", index=False))

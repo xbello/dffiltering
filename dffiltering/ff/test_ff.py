@@ -121,13 +121,25 @@ class testMainEntry(TestCase):
                                 "filter_sample.json")
 
     def test_main_entry_filter_correctly(self):
-        df = ff.main(self.json_filter, self.tab_file)
+        class Arg(object):
+            pass
+        args = Arg()
+        args.json_filter = self.json_filter
+        args.filepath = self.tab_file
+        df = ff.main(args)
 
         self.assertEqual(df.shape, (7, 151))
 
 
 class testArgParser(TestCase):
-    def test_multiple_argument_loading(self):
+    def setUp(self):
+        self.tab_file = join(dirname(__file__), "test_files", "8859.tab")
+        self.json_filter = join(dirname(__file__),
+                                "test_files",
+                                "filter_sample.json")
+        self.gene_file = join(dirname(__file__), "test_files", "Gene.refGene")
+
+    def test_multiple_argument_parsing(self):
         args = ff.argparser([
             "--column-contains", "/path/to/Gene.refGene",
             "--column-contains", "/path/to/ExAC_ALL",
@@ -137,3 +149,14 @@ class testArgParser(TestCase):
         self.assertTrue(args)
         self.assertCountEqual(args.column_contains,
                               ["/path/to/Gene.refGene", "/path/to/ExAC_ALL"])
+
+    def test_multiple_argument_loading(self):
+        self.tab_file = join(dirname(__file__), "test_files", "8859.tab")
+        args = ff.argparser([
+            "--column-contains", self.gene_file,
+            self.tab_file,
+            self.json_filter])
+
+        df = ff.main(args)
+
+        self.assertEqual(df.shape, (4, 151))

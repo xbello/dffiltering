@@ -1,23 +1,12 @@
-import argparse
+import sys
 from dffiltering.ff import ff
 
 
-def parse_args():
-    parser = argparse.ArgumentParser(
-        description="Filter a file per JSON conditions")
-    parser.add_argument("tsv",
-                        help="A .tsv file path.")
-    parser.add_argument("json",
-                        help="A .json file path.")
-
-    return parser.parse_args()
-
-
 def run():
-    args = parse_args()
+    args = ff.argparser(sys.argv[1:])
 
     if args:
-        df = ff.main(args.json, args.tsv)
+        df = ff.main(args)
         print(df.to_csv(sep="\t", index=False))
 
 
