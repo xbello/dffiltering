@@ -160,3 +160,12 @@ class testArgParser(TestCase):
         df = ff.main(args)
 
         self.assertEqual(df.shape, (4, 151))
+
+    def test_extra_argument_contains_loader(self):
+        self.file1 = join(dirname(__file__), "test_files", "CocaCola")
+        self.file2 = join(dirname(__file__), "test_files", "Gene.refGene")
+        conditions = ff.load_from_files([self.file1, self.file2], "contains")
+
+        self.assertCountEqual(conditions,
+                              ["Gene.refGene contains PRH1|GRIN2B|FAKE3",
+                               "CocaCola contains Azucar|Marron"])

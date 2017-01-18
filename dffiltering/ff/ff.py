@@ -65,6 +65,19 @@ def load(filepath):
     return df
 
 
+def load_from_files(filepaths, condition):
+    """Return a list of conditions loaded from text files."""
+    conds = []
+    for column in filepaths:
+        column_name = basename(column)
+        with open(column) as contains:
+            conditions = "|".join([_.rstrip() for _ in contains])
+        conds.append("{} {} {}".format(
+            column_name, condition, conditions))
+
+    return conds
+
+
 def argparser(args):
     """Return the parsed arguments."""
     import argparse
@@ -94,11 +107,7 @@ def main(args):  # json_filter, filepath, column_contains=None):
 
     if hasattr(args, "column_contains"):
         # Load the extra conditions passed
-        for column in args.column_contains:
-            column_name = basename(column)
-            with open(column) as contains:
-                conditions = "|".join([_.rstrip() for _ in contains])
-            filters.append("{} contains {}".format(column_name, conditions))
+        filters.extend(load_from_files(args.column_contains, "contains"))
 
     df = dffilter(filters, load(args.filepath))
 
