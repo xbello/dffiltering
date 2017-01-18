@@ -124,3 +124,16 @@ class testMainEntry(TestCase):
         df = ff.main(self.json_filter, self.tab_file)
 
         self.assertEqual(df.shape, (7, 151))
+
+
+class testArgParser(TestCase):
+    def test_multiple_argument_loading(self):
+        args = ff.argparser([
+            "--column-contains", "/path/to/Gene.refGene",
+            "--column-contains", "/path/to/ExAC_ALL",
+            "/path/to/filepath.tsv",
+            "/path/to/filter.json"])
+
+        self.assertTrue(args)
+        self.assertCountEqual(args.column_contains,
+                              ["/path/to/Gene.refGene", "/path/to/ExAC_ALL"])

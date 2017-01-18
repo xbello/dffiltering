@@ -61,21 +61,26 @@ def load(filepath):
     df[numeric_columns] = df[numeric_columns].\
         apply(pd.to_numeric, errors="coerce")
 
-
     return df
 
 
-def argparser():
+def argparser(args):
     """Return the parsed arguments."""
     import argparse
 
     parser = argparse.ArgumentParser(description="DataFrame Filtering")
-    parser.add_argument("filepath",
+    parser.add_argument("filepath", nargs=1,
                         help="Path to the TSV file")
-    parser.add_argument("json_filter",
+    parser.add_argument("json_filter", nargs=1,
                         help="JSON file with list of filters")
+    parser.add_argument(
+        "--column-contains", action="append",
+        help="""If you find more suitable to provide the filtering conditions
+        as a txt list in a file, include as many columns as you need:
 
-    return parser
+        --column-contains columnName --column-contains anotherCol""")
+
+    return parser.parse_args(args)
 
 
 def main(json_filter, filepath):
@@ -90,7 +95,7 @@ def main(json_filter, filepath):
 
 if __name__ == "__main__":
     import sys
-    args = argparser().parse_args(sys.argv[1:])
-    d_f = main(args.json_filter, args.filepath)
+    p_args = argparser(sys.argv[1:])
+    d_f = main(p_args.json_filter, p_args.filepath)
 
     print(d_f.to_csv(sep="\t", index=False))
