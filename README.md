@@ -12,6 +12,13 @@ http://github.com/xbello/dffiltering
 pip3 install git+git://github.com/xbello/dffiltering
 ```
 
+## Update
+
+```sh
+pip3 install git+git://github.com/xbello/dffiltering --upgrade
+```
+
+
 ## Usage
 
 You'll need a TSV file and a json file with all the filtering conditions. The json file list all the filters to apply cummulatively to the TSV, like [this](https://raw.githubusercontent.com/xbello/dffiltering/master/ff/test_files/filter_sample.json):
@@ -34,6 +41,8 @@ If you ever need a lot of "contains" you can either try to transform your list
 into a nice JSON condition:
 
     Contents of Gene.refGene:
+
+
         GENE1
         GENE2
         ...
@@ -49,6 +58,8 @@ or you can pass a filename matching a column name to the program:
 This can be done with multiple columns:
 
     dff path/to/tabfile.tsv path/to/filters.json --column-contains path/to/Gene.refGene --column-contains path/to/ExAC_ALL
+
+<div class="alert alert-warning">Note the file is named 'Gene.refGene' and not 'Gene.refGene.txt'</div>
 
 # Troubleshotting
 

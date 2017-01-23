@@ -1,5 +1,8 @@
 import sys
-from dffiltering.ff import ff
+try:
+    from dffiltering.ff import ff
+except ImportError:
+    from ff import ff
 
 
 def run():

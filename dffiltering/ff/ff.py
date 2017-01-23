@@ -4,7 +4,7 @@ import pandas as pd
 
 try:
     from .columns import COLUMN_TYPES
-    # XXX Users should be able to aport their own column_types
+    # XXX Users should be able to provide their own column_types
 except (SystemError, ImportError):
     from columns import COLUMN_TYPES
 
@@ -105,7 +105,7 @@ def main(args):  # json_filter, filepath, column_contains=None):
     with open(args.json_filter) as js_filter:
         filters = json.load(js_filter)
 
-    if hasattr(args, "column_contains"):
+    if getattr(args, "column_contains"):
         # Load the extra conditions passed
         filters.extend(load_from_files(args.column_contains, "contains"))
 
