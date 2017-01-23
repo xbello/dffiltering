@@ -46,11 +46,13 @@ Contents of `Gene.refGene`:
         GENE2
         ...
         GENEX
+        
+and hen execute this command to create the JSON filter.
 
-    $ tr "\r\n" "|" < source
+    $ tr "\r\n" "|" < Gene.refGene
     GENE1|GENE2| ... |GENEX
 
-or you can pass a filename matching a column name to the program:
+Or you can pass a filename matching a column name to the program:
 
     dff path/to/tabfile.tsv path/to/filters.json --column-contains path/to/Gene.refGene
 
