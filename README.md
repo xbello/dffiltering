@@ -40,8 +40,7 @@ dff path/to/tabfile.tsv path/to/filters.json
 If you ever need a lot of "contains" you can either try to transform your list
 into a nice JSON condition:
 
-    Contents of Gene.refGene:
-
+Contents of `Gene.refGene`:
 
         GENE1
         GENE2
@@ -59,7 +58,7 @@ This can be done with multiple columns:
 
     dff path/to/tabfile.tsv path/to/filters.json --column-contains path/to/Gene.refGene --column-contains path/to/ExAC_ALL
 
-<div class="alert alert-warning">Note the file is named 'Gene.refGene' and not 'Gene.refGene.txt'</div>
+> Note the file is named 'Gene.refGene' and not 'Gene.refGene.txt'.
 
 # Troubleshotting
 
