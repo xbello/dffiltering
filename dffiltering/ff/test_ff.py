@@ -120,9 +120,9 @@ class testDataFrame(TestCase):
 
 class testFilterAndDFClean(TestCase):
     def test_cleansing_filter_and_df(self):
-        self.tab_file = file_test("DOT.column.tab")
+        tab_file = file_test("DOT.column.tab")
         column = "TVC.counts"
-        df = ff.load(self.tab_file)
+        df = ff.load(tab_file)
 
         self.assertTrue("TVC.counts" in df.columns)
 
@@ -189,9 +189,8 @@ class testArgParser(TestCase):
         self.assertEqual(df.shape, (4, 151))
 
     def test_extra_argument_contains_loader(self):
-        self.file1 = file_test("CocaCola")
-        conditions = ff.load_from_files(
-            [self.file1, self.gene_file], "contains")
+        file1 = file_test("CocaCola")
+        conditions = ff.load_from_files([file1, self.gene_file], "contains")
 
         self.assertCountEqual(conditions,
                               ["Gene.refGene contains PRH1|GRIN2B|FAKE3",

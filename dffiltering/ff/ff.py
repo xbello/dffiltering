@@ -21,7 +21,8 @@ def clean(column, df):
             df.rename(columns={column: new_column}, inplace=True)
         # Replace all cases of this weird column
 
-    return new_column, df
+        return new_column, df
+    return column, df
 
 
 def dffilter(conditions, df):
@@ -36,26 +37,16 @@ def dffilter(conditions, df):
         #  column name.
         column = splitext(column)[0]
 
-    # Column names with dots, spaces, brackets... fail to do query
-    weirds = [".", " "]
-    if any(_ in column for _ in weirds):
-        new_column = column
-        for weird in weirds:
-            new_column = new_column.replace(weird, "_")
-        if column in df.columns:
-            df.rename(columns={column: new_column}, inplace=True)
-        # Replace all cases of this weird column
-        conditions = [_.replace(column, new_column) for _ in conditions]
+    new_column, df = clean(column, df)
+    conditions = [_.replace(column, new_column) for _ in conditions]
+    column = new_column
 
-        return dffilter(conditions, df)
-
-    if operator in ["contains"]:
-        if column in df.columns:
+    if column in df.columns:
+        if operator in ["contains"]:
             return dffilter(conditions[1:],
                             df[df[column].str.contains(terms, na=False)])
 
-    else:
-        if column in df.columns:
+        else:
             return dffilter(conditions[1:], df.query(conditions[0]))
 
     # This column didn't exits, continue trying next columns
