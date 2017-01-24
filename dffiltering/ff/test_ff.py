@@ -118,6 +118,20 @@ class testDataFrame(TestCase):
         self.assertEqual(ff.dffilter(conditions, df).shape, (1, 76))
 
 
+class testFilterAndDFClean(TestCase):
+    def test_cleansing_filter_and_df(self):
+        self.tab_file = file_test("DOT.column.tab")
+        column = "TVC.counts"
+        df = ff.load(self.tab_file)
+
+        self.assertTrue("TVC.counts" in df.columns)
+
+        column, df = ff.clean(column, df)
+
+        self.assertEqual("TVC_counts", column)
+        self.assertTrue("TVC_counts" in df.columns)
+
+
 class testMainEntry(TestCase):
     def setUp(self):
         self.tab_file = file_test("8859.tab")
