@@ -1,5 +1,5 @@
 """Deals with TAB files to load, munge and filter them."""
-from os.path import basename
+from os.path import basename, splitext
 import pandas as pd
 
 try:
@@ -16,6 +16,11 @@ def dffilter(conditions, df):
 
     column, operator, terms = conditions[0].split(" ", 2)
 
+    if column not in df.columns:
+        # As now this could come as file, trim the extension from the
+        #  column name.
+        column = splitext(column)[0]
+
     # Column names with dots, spaces, brackets... fail to do query
     weirds = [".", " "]
     if any(_ in column for _ in weirds):
@@ -24,7 +29,9 @@ def dffilter(conditions, df):
             new_column = new_column.replace(weird, "_")
         if column in df.columns:
             df.rename(columns={column: new_column}, inplace=True)
-        conditions[0] = conditions[0].replace(column, new_column)
+        # Replace all cases of this weird column
+        conditions = [_.replace(column, new_column) for _ in conditions]
+
         return dffilter(conditions, df)
 
     if operator in ["contains"]:
