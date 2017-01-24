@@ -7,6 +7,11 @@ from unittest import TestCase
 import ff
 
 
+def file_test(filename):
+    """Return the path to filename in test_files."""
+    return join(dirname(__file__), "test_files", filename)
+
+
 class testDataFrame(TestCase):
     def setUp(self):
         self.tab_file = join(dirname(__file__), "test_files", "8859.tab")
@@ -115,29 +120,38 @@ class testDataFrame(TestCase):
 
 class testMainEntry(TestCase):
     def setUp(self):
-        self.tab_file = join(dirname(__file__), "test_files", "8859.tab")
-        self.json_filter = join(dirname(__file__),
-                                "test_files",
-                                "filter_sample.json")
+        self.tab_file = file_test("8859.tab")
+        self.json_filter = file_test("filter_sample.json")
 
     def test_main_entry_filter_correctly(self):
         class Arg(object):
-            pass
+            json_filter = self.json_filter
+            filepath = self.tab_file
+            column_contains = None
         args = Arg()
-        args.json_filter = self.json_filter
-        args.filepath = self.tab_file
+
         df = ff.main(args)
 
         self.assertEqual(df.shape, (7, 151))
 
+    def test_main_entry_filter_correctly_with_ext(self):
+        class Arg(object):
+            json_filter = self.json_filter
+            filepath = self.tab_file
+            column_contains = [file_test("Gene.refGene.txt")]
+        args = Arg()
+
+        df = ff.main(args)
+
+        self.assertEqual(df.shape, (4, 151))
+
 
 class testArgParser(TestCase):
     def setUp(self):
-        self.tab_file = join(dirname(__file__), "test_files", "8859.tab")
-        self.json_filter = join(dirname(__file__),
-                                "test_files",
-                                "filter_sample.json")
-        self.gene_file = join(dirname(__file__), "test_files", "Gene.refGene")
+        self.tab_file = file_test("8859.tab")
+        self.json_filter = file_test("filter_sample.json")
+        self.gene_file = file_test("Gene.refGene")
+        self.gene_file_ext = file_test("Gene.refGene.txt")
 
     def test_multiple_argument_parsing(self):
         args = ff.argparser([
@@ -151,7 +165,6 @@ class testArgParser(TestCase):
                               ["/path/to/Gene.refGene", "/path/to/ExAC_ALL"])
 
     def test_multiple_argument_loading(self):
-        self.tab_file = join(dirname(__file__), "test_files", "8859.tab")
         args = ff.argparser([
             "--column-contains", self.gene_file,
             self.tab_file,
@@ -162,9 +175,9 @@ class testArgParser(TestCase):
         self.assertEqual(df.shape, (4, 151))
 
     def test_extra_argument_contains_loader(self):
-        self.file1 = join(dirname(__file__), "test_files", "CocaCola")
-        self.file2 = join(dirname(__file__), "test_files", "Gene.refGene")
-        conditions = ff.load_from_files([self.file1, self.file2], "contains")
+        self.file1 = file_test("CocaCola")
+        conditions = ff.load_from_files(
+            [self.file1, self.gene_file], "contains")
 
         self.assertCountEqual(conditions,
                               ["Gene.refGene contains PRH1|GRIN2B|FAKE3",
