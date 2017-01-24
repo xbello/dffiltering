@@ -55,10 +55,16 @@ def dffilter(conditions, df):
 
 def load(filepath):
     """Return the filepath loaded as a DataFrame."""
+    # Explain: if dtype is not specified, read_table loads all the file into
+    #  RAM (4 Gb), then infer types (down to 2 Gb) and then work. By loading
+    #  everything as "object" we save the first pre-loading.
+    with open(filepath) as csv:
+        header = {}.fromkeys(csv.readline().rstrip().split("\t"), object)
+
     try:
-        df = pd.read_table(filepath)
+        df = pd.read_table(filepath, dtype=header)
     except UnicodeDecodeError:
-        df = pd.read_table(filepath, encoding="iso-8859-1")
+        df = pd.read_table(filepath, dtype=header, encoding="iso-8859-1")
 
     numeric_columns = [_ for _ in COLUMN_TYPES["numeric"] if _ in df.columns]
 
