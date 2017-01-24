@@ -77,9 +77,12 @@ def load(filepath):
         df[numeric_column].replace("-", 0, inplace=True)
         # Fill the NaN with zeroes
         df[numeric_column].fillna(0, inplace=True)
+        # Typecast the column into numeric hidding errors in NaN
+        df[numeric_column] = pd.to_numeric(df[numeric_column], errors="coerce")
 
-    df[numeric_columns] = df[numeric_columns].\
-        apply(pd.to_numeric, errors="coerce")
+    # This could be faster than above line... but it isn't
+    # df[numeric_columns] = df[numeric_columns].\
+    #    apply(pd.to_numeric, errors="coerce")
 
     return df
 
