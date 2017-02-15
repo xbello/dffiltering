@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name="dffiltering",
-    version="0.1.5",
+    version="0.1.6",
     description="Command line to filter TSV files.""",
     author_email="xbello@gmail.com",
     packages=["dffiltering.ff", "dffiltering.command"],
