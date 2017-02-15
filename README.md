@@ -29,6 +29,8 @@ You'll need a TSV file and a json file with all the filtering conditions. The js
      "Func.refGene contains exonic|splicing"
     ]
 
+The `string` filtering operations can be `contains` or `not_contains`.
+
 Then you can call the filtering from the command line:
 
 ```sh

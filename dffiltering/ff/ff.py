@@ -46,6 +46,10 @@ def dffilter(conditions, df):
             return dffilter(conditions[1:],
                             df[df[column].str.contains(terms, na=False)])
 
+        if operator in ["not_contains"]:
+            return dffilter(conditions[1:],
+                            df[~df[column].str.contains(terms, na=False)])
+
         else:
             return dffilter(conditions[1:], df.query(conditions[0]))
 

@@ -131,6 +131,31 @@ class testFilterAndDFClean(TestCase):
         self.assertEqual("TVC_counts", column)
         self.assertTrue("TVC_counts" in df.columns)
 
+    def test_reverse_the_filter_condition_single(self):
+        df = ff.load(file_test("DOT.column.tab"))
+
+        conditions = ['Func.refGene not_contains intronic']
+        self.assertEqual(ff.dffilter(conditions, df).shape, (4, 98))
+
+    def test_reverse_the_filter_condition_multiple(self):
+        df = ff.load(file_test("DOT.column.tab"))
+
+        conditions = ['ExonicFunc.refGene not_contains frameshift deletion']
+        self.assertEqual(ff.dffilter(conditions, df).shape, (8, 98))
+
+    def test_reverse_the_filter_condition_similar_words(self):
+        df = ff.load(file_test("DOT.column.tab"))
+
+        conditions = ['ExonicFunc.refGene not_contains synonymous SNV']
+        self.assertEqual(ff.dffilter(conditions, df).shape, (8, 98))
+
+    def test_reverse_the_filter_condition_similar_words_and_or(self):
+        df = ff.load(file_test("DOT.column.tab"))
+
+        conditions = [
+            'ExonicFunc.refGene not_contains synonymous SNV|deletion']
+        self.assertEqual(ff.dffilter(conditions, df).shape, (7, 98))
+
 
 class testMainEntry(TestCase):
     def setUp(self):

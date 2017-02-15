@@ -1,0 +1,4 @@
+["ExAC_ALL <= 0.1",
+ "Callers contains GATK,TVC|TVC,GATK",
+ "Func.refGene contains exonic|splicing"
+]
