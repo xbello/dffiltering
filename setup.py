@@ -1,9 +1,10 @@
 from setuptools import setup
+from dffiltering.ff import _version
 
 
 setup(
     name="dffiltering",
-    version="0.1.7",
+    version=_version.__version__,
     description="Command line to filter TSV files.""",
     author_email="xbello@gmail.com",
     packages=["dffiltering.ff", "dffiltering.command"],

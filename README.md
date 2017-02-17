@@ -21,6 +21,12 @@ pip3 install git+git://github.com/xbello/dffiltering --upgrade
 
 ## Usage
 
+First of all get a brief read of the command help with:
+
+```sh
+dff -h
+```
+
 You'll need a TSV file and a json file with all the filtering conditions. The json file list all the filters to apply cummulatively to the TSV, like [this](https://raw.githubusercontent.com/xbello/dffiltering/master/ff/test_files/filter_sample.json):
 
     ["vardb_gatk <= 20",
@@ -34,7 +40,7 @@ The `string` filtering operations can be `contains` or `not_contains`. In the ed
 Then you can call the filtering from the command line:
 
 ```sh
-dff path/to/tabfile.tsv path/to/filters.json
+dff --filepath path/to/tabfile.tsv --json_filter path/to/filters.json
 ```
 
 ### Big "contains"
@@ -56,11 +62,11 @@ and hen execute this command to create the JSON filter.
 
 Or you can pass a filename matching a column name to the program:
 
-    dff path/to/tabfile.tsv path/to/filters.json --column-contains path/to/Gene.refGene
+    dff --filepath path/to/tabfile.tsv --json_filter path/to/filters.json --column-contains path/to/Gene.refGene
 
 This can be done with multiple columns:
 
-    dff path/to/tabfile.tsv path/to/filters.json --column-contains path/to/Gene.refGene --column-contains path/to/ExAC_ALL
+    dff --filepath path/to/tabfile.tsv --json_filter path/to/filters.json --column-contains path/to/Gene.refGene --column-contains path/to/ExAC_ALL
 
 > Note the file is named 'Gene.refGene' and not 'Gene.refGene.txt'.
 

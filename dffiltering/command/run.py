@@ -10,7 +10,8 @@ def run():
 
     if args:
         df = ff.main(args)
-        print(df.to_csv(sep="\t", index=False))
+        if df:
+            print(df.to_csv(sep="\t", index=False))
 
 
 if __name__ == "__main__":

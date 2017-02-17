@@ -109,9 +109,9 @@ def argparser(args):
     import argparse
 
     parser = argparse.ArgumentParser(description="DataFrame Filtering")
-    parser.add_argument("filepath",
+    parser.add_argument("--filepath",
                         help="Path to the TSV file")
-    parser.add_argument("json_filter",
+    parser.add_argument("--json_filter",
                         help="JSON file with list of filters")
     parser.add_argument(
         "--column-contains", action="append",
@@ -127,18 +127,25 @@ def argparser(args):
         not in the default ones, you'll have to include them in this flag:
 
         --numeric_cols columnName
-        --numeric_cols columnNameA columnNameB""")
+        --numeric_cols columnNameA,columnNameB""")
+
+    parser.add_argument("--version", "-v", action="store_true")
 
     return parser.parse_args(args)
 
 
 def main(args):  # json_filter, filepath, column_contains=None):
     """Return a filtered DF per json_filter."""
-    import json
+    if getattr(args, "version", None):
+        from . import _version
+        print(_version.__version__)
 
-    filters = {}
-    with open(args.json_filter) as js_filter:
-        filters = json.load(js_filter)
+    filters = []
+    if args.json_filter:
+        import json
+
+        with open(args.json_filter) as js_filter:
+            filters = json.load(js_filter)
 
     if getattr(args, "column_contains", None):
         # Load the extra conditions passed
@@ -148,9 +155,10 @@ def main(args):  # json_filter, filepath, column_contains=None):
         # Load the extra columns defined as numeric
         COLUMN_TYPES["numeric"].extend(args.numeric_cols)
 
-    df = dffilter(filters, load(args.filepath))
+    if args.filepath:
+        df = dffilter(filters, load(args.filepath))
 
-    return df
+        return df
 
 
 if __name__ == "__main__":
@@ -158,4 +166,5 @@ if __name__ == "__main__":
     p_args = argparser(sys.argv[1:])
     d_f = main(p_args)
 
-    print(d_f.to_csv(sep="\t", index=False))
+    if d_f:
+        print(d_f.to_csv(sep="\t", index=False))
