@@ -29,7 +29,7 @@ You'll need a TSV file and a json file with all the filtering conditions. The js
      "Func.refGene contains exonic|splicing"
     ]
 
-The `string` filtering operations can be `contains` or `not_contains`.
+The `string` filtering operations can be `contains` or `not_contains`. In the edge case that you need to find a columns that contains "XXX" but no "ZZZXXX" use a RegExp like `Func.refGene contains \WXXX` (backslash and capital W): the `\W` marker matches anything that is not a char e.g. spaces, tabs and semicolons.
 
 Then you can call the filtering from the command line:
 
