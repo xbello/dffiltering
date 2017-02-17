@@ -120,6 +120,15 @@ def argparser(args):
 
         --column-contains columnName --column-contains anotherCol""")
 
+    parser.add_argument(
+        "--numeric_cols",
+        type=lambda s: [_ for _ in s.split(',')],
+        help="""If you have numeric columns added to your .tsv file that are
+        not in the default ones, you'll have to include them in this flag:
+
+        --numeric_cols columnName
+        --numeric_cols columnNameA columnNameB""")
+
     return parser.parse_args(args)
 
 
@@ -131,9 +140,13 @@ def main(args):  # json_filter, filepath, column_contains=None):
     with open(args.json_filter) as js_filter:
         filters = json.load(js_filter)
 
-    if getattr(args, "column_contains"):
+    if getattr(args, "column_contains", None):
         # Load the extra conditions passed
         filters.extend(load_from_files(args.column_contains, "contains"))
+
+    if getattr(args, "numeric_cols", None):
+        # Load the extra columns defined as numeric
+        COLUMN_TYPES["numeric"].extend(args.numeric_cols)
 
     df = dffilter(filters, load(args.filepath))
 

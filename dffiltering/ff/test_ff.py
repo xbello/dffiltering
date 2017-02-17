@@ -162,14 +162,15 @@ class testMainEntry(TestCase):
         self.tab_file = file_test("8859.tab")
         self.json_filter = file_test("filter_sample.json")
 
-    def test_main_entry_filter_correctly(self):
         class Arg(object):
             json_filter = self.json_filter
             filepath = self.tab_file
             column_contains = None
-        args = Arg()
 
-        df = ff.main(args)
+        self.args = Arg()
+
+    def test_main_entry_filter_correctly(self):
+        df = ff.main(self.args)
 
         self.assertEqual(df.shape, (7, 151))
 
@@ -183,6 +184,15 @@ class testMainEntry(TestCase):
         df = ff.main(args)
 
         self.assertEqual(df.shape, (4, 151))
+
+    def test_main_entry_with_extra_columns(self):
+        self.args.filepath = file_test("Ten.columns.tab")
+        self.args.json_filter = file_test("extra_cols.json")
+        self.args.numeric_cols = ["MakeUp.Name", "Other.Column"]
+
+        df = ff.main(self.args)
+
+        self.assertEqual(df.shape, (1, 10))
 
 
 class testArgParser(TestCase):
@@ -220,3 +230,19 @@ class testArgParser(TestCase):
         self.assertCountEqual(conditions,
                               ["Gene.refGene contains PRH1|GRIN2B|FAKE3",
                                "CocaCola contains Azucar|Marron"])
+
+    def test_naming_new_numeric_columns(self):
+        args = ff.argparser([
+            "--numeric_cols", "MakeUp.Name",
+            "/path/to/filepath.tsv",
+            "/path/to/filter.json"])
+
+        self.assertTrue(args)
+        self.assertCountEqual(args.numeric_cols, ["MakeUp.Name"])
+
+        args = ff.argparser([
+            "--numeric_cols", "MakeUp.Name,Other.Name",
+            "/path/to/filepath.tsv",
+            "/path/to/filter.json"])
+
+        self.assertCountEqual(args.numeric_cols, ["MakeUp.Name", "Other.Name"])
