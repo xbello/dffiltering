@@ -18,6 +18,14 @@ pip3 install git+git://github.com/xbello/dffiltering
 pip3 install git+git://github.com/xbello/dffiltering --upgrade
 ```
 
+There's a chance the previous don't work. You'll have to try to download the
+whole package (https://github.com/xbello/dffiltering/archive/master.zip),
+unzip it, open a command line to the unzipped folder that should contain some
+`setup.py` file and write this:
+
+```sh
+python setup.py install
+```
 
 ## Usage
 
@@ -54,7 +62,7 @@ Contents of `Gene.refGene`:
         GENE2
         ...
         GENEX
-        
+
 and hen execute this command to create the JSON filter.
 
     $ tr "\r\n" "|" < Gene.refGene
