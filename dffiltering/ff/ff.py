@@ -111,7 +111,7 @@ def argparser(args):
     parser = argparse.ArgumentParser(description="DataFrame Filtering")
     parser.add_argument("--filepath",
                         help="Path to the TSV file")
-    parser.add_argument("--json_filter",
+    parser.add_argument("--json-filter",
                         help="JSON file with list of filters")
     parser.add_argument(
         "--column-contains", action="append",
@@ -121,13 +121,13 @@ def argparser(args):
         --column-contains columnName --column-contains anotherCol""")
 
     parser.add_argument(
-        "--numeric_cols",
+        "--numeric-cols",
         type=lambda s: [_ for _ in s.split(',')],
         help="""If you have numeric columns added to your .tsv file that are
         not in the default ones, you'll have to include them in this flag:
 
-        --numeric_cols columnName
-        --numeric_cols columnNameA,columnNameB""")
+        --numeric-cols columnName
+        --numeric-cols columnNameA,columnNameB""")
 
     parser.add_argument("--version", "-v", action="store_true")
 

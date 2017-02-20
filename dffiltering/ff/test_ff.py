@@ -146,7 +146,7 @@ class testFilterAndDFClean(TestCase):
     def test_reverse_the_filter_condition_similar_words(self):
         df = ff.load(file_test("DOT.column.tab"))
 
-        conditions = ['ExonicFunc.refGene not_contains \Wsynonymous SNV']
+        conditions = [r'ExonicFunc.refGene not_contains \Wsynonymous SNV']
         self.assertEqual(ff.dffilter(conditions, df).shape, (8, 98))
 
     def test_reverse_the_filter_condition_similar_words_and_or(self):
@@ -207,7 +207,7 @@ class testArgParser(TestCase):
             "--column-contains", "/path/to/Gene.refGene",
             "--column-contains", "/path/to/ExAC_ALL",
             "--filepath", "/path/to/filepath.tsv",
-            "--json_filter", "/path/to/filter.json"])
+            "--json-filter", "/path/to/filter.json"])
 
         self.assertTrue(args)
         self.assertCountEqual(args.column_contains,
@@ -217,7 +217,7 @@ class testArgParser(TestCase):
         args = ff.argparser([
             "--column-contains", self.gene_file,
             "--filepath", self.tab_file,
-            "--json_filter", self.json_filter])
+            "--json-filter", self.json_filter])
 
         df = ff.main(args)
 
@@ -233,16 +233,16 @@ class testArgParser(TestCase):
 
     def test_naming_new_numeric_columns(self):
         args = ff.argparser([
-            "--numeric_cols", "MakeUp.Name",
+            "--numeric-cols", "MakeUp.Name",
             "--filepath", "/path/to/filepath.tsv",
-            "--json_filter", "/path/to/filter.json"])
+            "--json-filter", "/path/to/filter.json"])
 
         self.assertTrue(args)
         self.assertCountEqual(args.numeric_cols, ["MakeUp.Name"])
 
         args = ff.argparser([
-            "--numeric_cols", "MakeUp.Name,Other.Name",
+            "--numeric-cols", "MakeUp.Name,Other.Name",
             "--filepath", "/path/to/filepath.tsv",
-            "--json_filter", "/path/to/filter.json"])
+            "--json-filter", "/path/to/filter.json"])
 
         self.assertCountEqual(args.numeric_cols, ["MakeUp.Name", "Other.Name"])
