@@ -10,7 +10,7 @@ def run():
 
     if args:
         df = ff.main(args)
-        if not df.empty:
+        if df is not None:
             print(df.to_csv(sep="\t", index=False))
 
 
