@@ -40,10 +40,13 @@ class testDataFrame(TestCase):
 
         self.assertEqual(df["MetaLR_score"].dtype, np.dtype("float64"))
 
-    def test_DF_can_be_filtered_by_one_condition(self):
+    def test_DF_can_be_filtered_by_one_condition_query(self):
         df = ff.load(self.tab_file)
 
         self.assertEqual(ff.dffilter(['Ref == "G"'], df).shape, (60, 151))
+
+    def test_DF_can_be_filtered_by_one_condition_contains(self):
+        df = ff.load(self.tab_file)
 
         conditions = ['Func.refGene contains exonic']
         self.assertEqual(ff.dffilter(conditions, df).shape, (57, 151))

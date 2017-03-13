@@ -51,7 +51,8 @@ def dffilter(conditions, df):
                             df[~df[column].str.contains(terms, na=False)])
 
         else:
-            return dffilter(conditions[1:], df.query(conditions[0]))
+            df.query(conditions[0], inplace=True)
+            return dffilter(conditions[1:], df)
 
     # This column didn't exits, continue trying next columns
     return dffilter(conditions[1:], df)
