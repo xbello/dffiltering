@@ -28,6 +28,13 @@ class testDataFrame(TestCase):
         # The DataFrame has 151 columns and 249 data rows.
         self.assertEqual(df.shape, (249, 151))
 
+    def test_can_load_gzipped_tab_as_DF(self):
+        df = ff.load(self.tab_file + ".gz")
+
+        self.assertEqual(type(df), pd.DataFrame)
+        # The DataFrame has 151 columns and 249 data rows.
+        self.assertEqual(df.shape, (249, 151))
+
     def test_load_with_weird_chars(self):
         df = ff.load(self.tab_file)
 

@@ -59,12 +59,22 @@ def dffilter(conditions, df):
 
 
 def load(filepath):
-    """Return the filepath loaded as a DataFrame."""
+    """Return the filepath loaded as a DataFrame.
+
+    filepath is a path to either a .tab file or a .tab gzipped file.
+
+    """
     # Explain: if dtype is not specified, read_table loads all the file into
     #  RAM (4 Gb), then infer types (down to 2 Gb) and then work. By loading
     #  everything as "object" we save the first pre-loading.
-    with open(filepath) as csv:
-        header = {}.fromkeys(csv.readline().rstrip().split("\t"), object)
+    if filepath.endswith(".gz"):
+        from gzip import open as open_f
+    else:
+        open_f = open
+
+    with open_f(filepath, "rb") as csv:
+        header = {}.fromkeys(
+            csv.readline().decode().rstrip().split("\t"), object)
 
     try:
         df = pd.read_table(filepath, dtype=header)
