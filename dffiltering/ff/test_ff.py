@@ -90,27 +90,27 @@ class testDataFrame(TestCase):
 
         conditions = ["TVC.counts < 3"]
 
-        self.assertEqual(ff.dffilter(conditions, df).shape, (8, 98))
+        self.assertEqual(ff.dffilter(conditions, df).shape, (8, 99))
 
         df = ff.load(self.tab2_file)  # The filtering of df is always in place
 
         conditions = ["TVC.counts > 3"]
 
-        self.assertEqual(ff.dffilter(conditions, df).shape, (1, 98))
+        self.assertEqual(ff.dffilter(conditions, df).shape, (1, 99))
 
     def test_non_existent_columns_doesnt_break_code(self):
         df = ff.load(self.tab2_file)
 
         conditions = ["Imaginary < 3"]
 
-        self.assertEqual(ff.dffilter(conditions, df).shape, (9, 98))
+        self.assertEqual(ff.dffilter(conditions, df).shape, (9, 99))
 
     def test_multiple_weirdness_can_function(self):
         df = ff.load(self.tab2_file)
 
         conditions = ["TVC.counts < 3", "TVC.counts > 3"]
 
-        self.assertEqual(ff.dffilter(conditions, df).shape, (0, 98))
+        self.assertEqual(ff.dffilter(conditions, df).shape, (0, 99))
 
     def test_NaN_in_str_fields_dont_break_the_filter(self):
         df = ff.load(self.tab3_file)
@@ -145,26 +145,32 @@ class testFilterAndDFClean(TestCase):
         df = ff.load(file_test("DOT.column.tab"))
 
         conditions = ['Func.refGene not_contains intronic']
-        self.assertEqual(ff.dffilter(conditions, df).shape, (4, 98))
+        self.assertEqual(ff.dffilter(conditions, df).shape, (4, 99))
 
     def test_reverse_the_filter_condition_multiple(self):
         df = ff.load(file_test("DOT.column.tab"))
 
         conditions = ['ExonicFunc.refGene not_contains frameshift deletion']
-        self.assertEqual(ff.dffilter(conditions, df).shape, (8, 98))
+        self.assertEqual(ff.dffilter(conditions, df).shape, (8, 99))
 
     def test_reverse_the_filter_condition_similar_words(self):
         df = ff.load(file_test("DOT.column.tab"))
 
         conditions = [r'ExonicFunc.refGene not_contains \Wsynonymous SNV']
-        self.assertEqual(ff.dffilter(conditions, df).shape, (8, 98))
+        self.assertEqual(ff.dffilter(conditions, df).shape, (8, 99))
 
     def test_reverse_the_filter_condition_similar_words_and_or(self):
         df = ff.load(file_test("DOT.column.tab"))
 
         conditions = [
             'ExonicFunc.refGene not_contains \Wsynonymous SNV|deletion']
-        self.assertEqual(ff.dffilter(conditions, df).shape, (7, 98))
+        self.assertEqual(ff.dffilter(conditions, df).shape, (7, 99))
+
+    def test_news_filter_2017_03(self):
+        df = ff.load(file_test("DOT.column.tab"))
+
+        conditions = ['gnomAD_exome_ALL > 0.99']
+        self.assertEqual(ff.dffilter(conditions, df).shape, (2, 99))
 
 
 class testMainEntry(TestCase):
