@@ -1,4 +1,5 @@
 """Test the ff module."""
+import json
 from os.path import dirname, join
 import pandas as pd
 import numpy as np
@@ -163,8 +164,19 @@ class testFilterAndDFClean(TestCase):
         df = ff.load(file_test("DOT.column.tab"))
 
         conditions = [
-            'ExonicFunc.refGene not_contains \Wsynonymous SNV|deletion']
+            r'ExonicFunc.refGene not_contains \Wsynonymous SNV|deletion']
         self.assertEqual(ff.dffilter(conditions, df).shape, (7, 99))
+
+    def test_reverse_the_filter_condition_similar_ords_and_or_json(self):
+        conds = json.load(open(file_test("slashW.json")))
+        df = ff.load(file_test("DOT.column.tab"))
+
+        new_df = ff.dffilter(conds, df)
+
+        print(new_df["ExonicFunc.refGene"])
+        print(new_df["Func_refGene"])
+
+        self.assertEqual(new_df.shape, (4, 99))
 
     def test_news_filter_2017_03(self):
         df = ff.load(file_test("DOT.column.tab"))

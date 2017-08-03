@@ -11,7 +11,6 @@ http://github.com/xbello/dffiltering
 ```sh
 pip3 install git+git://github.com/xbello/dffiltering
 ```
-
 ## Update
 
 ```sh
@@ -43,7 +42,7 @@ You'll need a TSV file and a json file with all the filtering conditions. The js
      "Func.refGene contains exonic|splicing"
     ]
 
-The `string` filtering operations can be `contains` or `not_contains`. In the edge case that you need to find a columns that contains "XXX" but no "ZZZXXX" use a RegExp like `Func.refGene contains \WXXX` (backslash and capital W): the `\W` marker matches anything that is not a char e.g. spaces, tabs and semicolons.
+The `string` filtering operations can be `contains` or `not_contains`. In the edge case that you need to find a columns that contains "XXX" but no "ZZZXXX" use a RegExp like `Func.refGene contains \\WXXX` (double-backslash and capital W): the `\\W` marker matches anything that is not a char e.g. spaces, tabs and semicolons.
 
 Then you can call the filtering from the command line:
 
@@ -80,4 +79,9 @@ This can be done with multiple columns:
 
 # Troubleshotting
 
-...
+## Windows installing gotchas
+
+On Windows systems I've found the following caveats:
+
+1. _dff not running because numpy fails_. Install numpy from a pre-compiled
+   binary. It can be found at http://www.lfd.uci.edu/~gohlke/pythonlibs/#numpy
