@@ -157,18 +157,18 @@ class testFilterAndDFClean(TestCase):
     def test_reverse_the_filter_condition_similar_words(self):
         df = ff.load(file_test("DOT.column.tab"))
 
-        conditions = [r'ExonicFunc.refGene not_contains \Wsynonymous SNV']
+        conditions = [r'ExonicFunc.refGene not_contains \bsynonymous SNV']
         self.assertEqual(ff.dffilter(conditions, df).shape, (8, 99))
 
     def test_reverse_the_filter_condition_similar_words_and_or(self):
         df = ff.load(file_test("DOT.column.tab"))
 
         conditions = [
-            r'ExonicFunc.refGene not_contains \Wsynonymous SNV|deletion']
+            r'ExonicFunc.refGene not_contains \bsynonymous SNV|deletion']
         self.assertEqual(ff.dffilter(conditions, df).shape, (7, 99))
 
     def test_reverse_the_filter_condition_similar_ords_and_or_json(self):
-        conds = json.load(open(file_test("slashW.json")))
+        conds = json.load(open(file_test("slashb.json")))
         df = ff.load(file_test("DOT.column.tab"))
 
         new_df = ff.dffilter(conds, df)

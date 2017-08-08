@@ -38,8 +38,7 @@ def dffilter(conditions, df):
         column = splitext(column)[0]
 
     new_column, df = clean(column, df)
-    #conditions = [_.replace(column, new_column) for _ in conditions]
-    conditions = [re.sub("^" + column, new_column, _)
+    conditions = [re.sub(r"\A" + column, new_column, _)
                   for _ in conditions]
     column = new_column
 
