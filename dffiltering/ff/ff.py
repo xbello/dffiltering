@@ -1,10 +1,10 @@
 """Deals with TAB files to load, munge and filter them."""
 from os.path import basename, splitext
+import re
 import pandas as pd
 
 try:
     from .columns import COLUMN_TYPES
-    # XXX Users should be able to provide their own column_types
 except (SystemError, ImportError):
     from columns import COLUMN_TYPES
 
@@ -38,7 +38,9 @@ def dffilter(conditions, df):
         column = splitext(column)[0]
 
     new_column, df = clean(column, df)
-    conditions = [_.replace(column, new_column) for _ in conditions]
+    #conditions = [_.replace(column, new_column) for _ in conditions]
+    conditions = [re.sub("^" + column, new_column, _)
+                  for _ in conditions]
     column = new_column
 
     if column in df.columns:

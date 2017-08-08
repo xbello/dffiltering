@@ -173,9 +173,6 @@ class testFilterAndDFClean(TestCase):
 
         new_df = ff.dffilter(conds, df)
 
-        print(new_df["ExonicFunc.refGene"])
-        print(new_df["Func_refGene"])
-
         self.assertEqual(new_df.shape, (4, 99))
 
     def test_news_filter_2017_03(self):
