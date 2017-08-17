@@ -1,6 +1,5 @@
 .cache
 .ropeproject
-__init__.py
 __pycache__
 build
 dffiltering.egg-info
