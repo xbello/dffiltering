@@ -77,6 +77,14 @@ This can be done with multiple columns:
 
 > Note the file is named 'Gene.refGene' and not 'Gene.refGene.txt'.
 
+### Batch processing
+
+If you're on a Windows machine and want to process a bunch of TSV files, try to
+use a batch file like [this sample](batch.bat). Tweak the file to your tastes,
+put it in the same directory that contains your TSV files and run it.
+
+If you're on Unix, the same sample file is [this](batch.sh).
+
 # Troubleshotting
 
 ## Windows installing gotchas
