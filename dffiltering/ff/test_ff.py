@@ -128,6 +128,12 @@ class testDataFrame(TestCase):
 
         self.assertEqual(ff.dffilter(conditions, df).shape, (1, 76))
 
+    def test_num_columns_with_commas(self):
+        tab_file = join(dirname(__file__), "test_files", "floats_comma.tab")
+        df = ff.load(tab_file)
+
+        self.assertEqual(ff.dffilter(['ExAC_ALL <= 0.1'], df).shape, (4, 2))
+
 
 class testFilterAndDFClean(TestCase):
     def test_cleansing_filter_and_df(self):

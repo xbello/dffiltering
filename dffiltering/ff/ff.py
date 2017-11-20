@@ -85,6 +85,8 @@ def load(filepath):
     numeric_columns = [_ for _ in COLUMN_TYPES["numeric"] if _ in df.columns]
 
     for numeric_column in numeric_columns:
+        # Correct columns with "," to ".".
+        df[numeric_column] = df[numeric_column].str.replace(",", ".")
         # Correct columns with "." to zeroes.
         df[numeric_column].replace(".", 0, inplace=True)
         # Correct columns with "1." to ones.
