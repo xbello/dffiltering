@@ -13,16 +13,20 @@ def clean(column, df):
     """Return the header/column in the DF cleaned from weird chars."""
     # Column names with dots, spaces, brackets... fail to do query
     weirds = [".", " "]
+    new_column = column
     if any(_ in column for _ in weirds):
-        new_column = column
         for weird in weirds:
             new_column = new_column.replace(weird, "_")
         if column in df.columns:
             df.rename(columns={column: new_column}, inplace=True)
         # Replace all cases of this weird column
 
-        return new_column, df
-    return column, df
+    # Fix the columns starting with numbers
+    if re.match("[0-9^]+", column):
+        new_column = "_" + column
+        df.rename(columns={column: new_column}, inplace=True)
+
+    return new_column, df
 
 
 def dffilter(conditions, df):

@@ -148,6 +148,18 @@ class testFilterAndDFClean(TestCase):
         self.assertEqual("TVC_counts", column)
         self.assertTrue("TVC_counts" in df.columns)
 
+    def test_cleansing_filter_number_starting_column(self):
+        tab_file = file_test("DOT.column.tab")
+        column = "1000G_ALL"
+        df = ff.load(tab_file)
+
+        self.assertTrue("1000G_ALL" in df.columns)
+
+        column, df = ff.clean(column, df)
+
+        self.assertEqual("_1000G_ALL", column)
+        self.assertTrue("_1000G_ALL" in df.columns)
+
     def test_reverse_the_filter_condition_single(self):
         df = ff.load(file_test("DOT.column.tab"))
 
@@ -186,6 +198,12 @@ class testFilterAndDFClean(TestCase):
 
         conditions = ['gnomAD_exome_ALL > 0.99']
         self.assertEqual(ff.dffilter(conditions, df).shape, (2, 99))
+
+    def test_thousand_genomes_column_filtering(self):
+        df = ff.load(file_test("DOT.column.tab"))
+
+        conditions = ['1000G_ALL > 0.2']
+        self.assertEqual(ff.dffilter(conditions, df).shape, (1, 99))
 
 
 class testMainEntry(TestCase):
