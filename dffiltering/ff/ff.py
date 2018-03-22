@@ -2,7 +2,10 @@
 import logging
 from os.path import basename, splitext
 import re
+from colorama import init, Fore, Style
 import pandas as pd
+
+init()  # Initialize colorama for windows
 
 try:
     from .columns import COLUMN_TYPES
@@ -11,6 +14,7 @@ except (SystemError, ImportError):
 
 
 logger = logging.getLogger("ff")
+
 
 def clean(column, df):
     """Return the header/column in the DF cleaned from weird chars."""
@@ -30,6 +34,11 @@ def clean(column, df):
         df.rename(columns={column: new_column}, inplace=True)
 
     return new_column, df
+
+
+def error(text):
+    """Colorize a text as error for the logs."""
+    return "{}{}{}".format(Fore.RED, text, Style.RESET_ALL)
 
 
 def dffilter(conditions, df):
@@ -62,9 +71,10 @@ def dffilter(conditions, df):
 
         else:
             df.query(conditions[0], inplace=True)
-            return dffilter(conditions[1:], df)
+            #return dffilter(conditions[1:], df)
     else:
-        logger.error("Column not found ({}).".format(original_column))
+        logger.error(
+            error("Column not found ({}).".format(original_column)))
 
     # This column didn't exits, continue trying next columns
     return dffilter(conditions[1:], df)

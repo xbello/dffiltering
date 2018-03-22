@@ -1,9 +1,12 @@
 """Test the ff module."""
 import json
 from os.path import dirname, join
+from colorama import init, Fore, Style
 import pandas as pd
 import numpy as np
 from unittest import TestCase
+
+init()
 
 import ff
 
@@ -249,8 +252,14 @@ class testMainEntry(TestCase):
         with self.assertLogs("ff", level="INFO") as log:
             df = ff.main(self.args)
             assert log.output == \
-                ["ERROR:ff:Column not found (Random.FLOAT.Column).",
-                 "ERROR:ff:Column not found (Random.CONTAIN.Column)."]
+                ["ERROR:ff:{}{}{}".format(
+                    Fore.RED,
+                    "Column not found (Random.FLOAT.Column).",
+                    Style.RESET_ALL),
+                 "ERROR:ff:{}{}{}".format(
+                     Fore.RED,
+                     "Column not found (Random.CONTAIN.Column).",
+                     Style.RESET_ALL)]
 
         # All rows are selected
         self.assertEqual(df.shape, (249, 151))
