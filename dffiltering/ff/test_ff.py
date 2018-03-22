@@ -243,6 +243,18 @@ class testMainEntry(TestCase):
 
         self.assertEqual(df.shape, (1, 10))
 
+    def test_main_entry_with_non_existant_columns(self):
+        self.args.json_filter = file_test("fake_columns.json")
+
+        with self.assertLogs("ff", level="INFO") as log:
+            df = ff.main(self.args)
+            assert log.output == \
+                ["ERROR:ff:Column not found (Random.FLOAT.Column).",
+                 "ERROR:ff:Column not found (Random.CONTAIN.Column)."]
+
+        # All rows are selected
+        self.assertEqual(df.shape, (249, 151))
+
 
 class testArgParser(TestCase):
     def setUp(self):

@@ -1,4 +1,5 @@
 """Deals with TAB files to load, munge and filter them."""
+import logging
 from os.path import basename, splitext
 import re
 import pandas as pd
@@ -8,6 +9,8 @@ try:
 except (SystemError, ImportError):
     from columns import COLUMN_TYPES
 
+
+logger = logging.getLogger("ff")
 
 def clean(column, df):
     """Return the header/column in the DF cleaned from weird chars."""
@@ -36,6 +39,8 @@ def dffilter(conditions, df):
 
     column, operator, terms = conditions[0].split(" ", 2)
 
+    original_column = column
+
     if column not in df.columns:
         # As now this could come as file, trim the extension from the
         #  column name.
@@ -58,6 +63,8 @@ def dffilter(conditions, df):
         else:
             df.query(conditions[0], inplace=True)
             return dffilter(conditions[1:], df)
+    else:
+        logger.error("Column not found ({}).".format(original_column))
 
     # This column didn't exits, continue trying next columns
     return dffilter(conditions[1:], df)
