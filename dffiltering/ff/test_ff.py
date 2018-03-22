@@ -132,7 +132,7 @@ class testDataFrame(TestCase):
         tab_file = join(dirname(__file__), "test_files", "floats_comma.tab")
         df = ff.load(tab_file)
 
-        self.assertEqual(ff.dffilter(['ExAC_ALL <= 0.1'], df).shape, (4, 2))
+        self.assertEqual(ff.dffilter(['ExAC_ALL <= 0.1'], df).shape, (5, 2))
 
 
 class testFilterAndDFClean(TestCase):
