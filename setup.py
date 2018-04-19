@@ -9,7 +9,8 @@ setup(
     author_email="xbello@gmail.com",
     packages=["dffiltering.ff", "dffiltering.command"],
     install_requires=[
-        "pandas==0.19.2"],
+        "pandas==0.19.2",
+        "colorama==0.3.9"],
     entry_points={
         "console_scripts": [
             "dff = dffiltering.command.run:run"]})
